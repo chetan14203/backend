@@ -1,38 +1,43 @@
-const { getConnection } = require('../connectDB'); 
+const Franchise = require('../models/franchise');
+const Pickup = require('../models/userModel');
+
 
 exports.createPickup = async (req, res) => {
   const { mobileNumber, name, address, pickupDate, pickupTime } = req.body;
-  const sql = 'INSERT INTO pickups (mobileNumber, name, address, pickupDate, pickupTime) VALUES (?, ?, ?, ?, ?)';
-  let connection;
+
   try {
-    connection = await getConnection();
-    const [results] = await connection.query(sql, [mobileNumber, name, address, pickupDate, pickupTime]);
-    res.status(201).json({ message: 'Pickup details received', id: results.insertId });
+   
+    const newPickup = await Pickup.create({
+      mobileNumber,
+      name,
+      address,
+      pickupDate,
+      pickupTime,
+    });
+
+  
+    res.status(201).json({ message: 'Pickup details received', id: newPickup.id });
   } catch (error) {
     console.error('Error inserting data:', error);
     res.status(500).json({ error: 'Database error' });
-  } finally {
-    if (connection) {
-      connection.release();
-    }
   }
 };
+
 
 exports.franchise = async (req, res) => {
   const { name, address, mobileNumber, vehicleName, vehicleNumber } = req.body;
 
   try {
-    const franchise = new Franchise({
+    const newFranchise = await Franchise.create({
       name,
       address,
       mobileNumber,
       vehicleName,
       vehicleNumber,
     });
-
-    await franchise.save();
-    res.status(201).send({ message: 'Franchise registered successfully!' });
+    res.status(201).send({ message: 'Franchise registered successfully!', id: newFranchise.id });
   } catch (error) {
+    console.error('Error registering franchise:', error);
     res.status(500).send({ error: 'Failed to register franchise' });
   }
 };

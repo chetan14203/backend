@@ -1,11 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../connectDB');
 
-const Pickup = sequelize.define('Pickup', {
-  mobileNumber: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
+const Franchise = sequelize.define('Franchise', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -14,14 +10,18 @@ const Pickup = sequelize.define('Pickup', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  pickupDate: {
-    type: DataTypes.DATEONLY,
+  mobileNumber: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
-  pickupTime: {
-    type: DataTypes.TIME,
+  vehicleName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  vehicleNumber: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 });
 
-module.exports = Pickup;
+module.exports = Franchise;
